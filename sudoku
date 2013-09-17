@@ -18,8 +18,8 @@ for (my $i = 0; $i < 9; $i++)
     }
   }
 }
-print"OU dos elementos dos vetores pendurados\n";
-#OU's dos vetores pendurados
+#print"OU dos elementos dos vetores pendurados\n";
+#OU's dos vetores pendurados ISSO É UM FATOOOOOOOOOOOOOOOOOOOOO!! uma casa tem de ter algum valor
 for (my $i = 0; $i < 9; $i++) 
 {
   for(my $j = 0; $j< 9; $j++)
@@ -31,9 +31,10 @@ for (my $i = 0; $i < 9; $i++)
     print "0\n";
   }
 }
-print"2 a 2 elementos dos vetores pendurados\n\n\n\n\n";
-#2 a 2 elementos dos vetores pendurados
-for (my $i = 0; $i < 9; $i++) 
+#print"2 a 2 elementos dos vetores pendurados\n\n\n\n\n";
+#2 a 2 elementos dos vetores pendurados ISSO É UM FATOOOOOOOOO!! e apenas só um valor
+
+for(my $i = 0; $i < 9; $i++) 
 {
   for(my $j = 0; $j< 9; $j++)
   {
@@ -46,8 +47,8 @@ for (my $i = 0; $i < 9; $i++)
     }
   }
 }
-print"OU de linhas\n\n\n\n\n";
-#varia colunas primeiro, depois valores e por ultimo linhas(fazendo os OUs aqui)(111 ou 121 ... 191 112 ... 192)
+#print"OU de linhas\n\n\n\n\n";
+#varia colunas primeiro, depois valores e por ultimo linhas(fazendo os OUs aqui)(111 ou 121 ... 191 112 ... 192)#parece certo
 for (my $i = 0; $i < 9; $i++) 
 {
   for(my $k = 0; $k< 9; $k++)
@@ -60,8 +61,8 @@ for (my $i = 0; $i < 9; $i++)
   }
   #print "0\n";
 }
-print"2 a 2 elementos das linhas\n\n\n\n\n";
-#2 a 2 elementos linhas#################################será?
+#print"2 a 2 elementos das linhas\n\n\n\n\n";
+#2 a 2 elementos linhas#################################será?###parece certo
 for (my $i = 0; $i < 9; $i++) 
 {
   for(my $k = 0; $k< 9; $k++)
@@ -75,8 +76,8 @@ for (my $i = 0; $i < 9; $i++)
     }
   }
 }
-print"OU de colunas\n\n\n\n\n";
-#varia linhas primeiro, depois valores e por ultimo colunas(fazendo os OUs aqui)(111 ou 211 ou ... ou 911 ... 112 ... 912)
+#print"OU de colunas\n\n\n\n\n";
+#varia linhas primeiro, depois valores e por ultimo colunas(fazendo os OUs aqui)(111 ou 211 ou ... ou 911 ... 112 ... 912)parece certooooooo
 for (my $j = 0; $j < 9; $j++) 
 {
   for(my $k = 0; $k< 9; $k++)
@@ -89,8 +90,8 @@ for (my $j = 0; $j < 9; $j++)
   }
   print "\n";
 }
-print"2 a 2 elementos das colunas\n\n\n\n\n";
-#2 a 2 elementos coluna#################################será?
+#print"2 a 2 elementos das colunas\n\n\n\n\n";
+#2 a 2 elementos coluna#################################será?parece certo
 for (my $j = 0; $j < 9; $j++) 
 {
   for(my $k = 0; $k< 9; $k++)
@@ -104,5 +105,20 @@ for (my $j = 0; $j < 9; $j++)
     }
   }
 }
+#OU mini grid
+for (my $i = 0; $i < 9; $i++) 
+{
+  for(my $j = 0; $j< 9; $j++)
+  {
+    for(my $k = 0; $k < 9; $k++)
+    {
+      for(my $l = 0; $l < 9; $l++)
+      {
+        print "-$matriz[$i][$j][$k] -$matriz[$l][$j][$k] 0\n";
+      }
+    }
+  }
+}
+
 
 
