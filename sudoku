@@ -3,8 +3,49 @@
 $linha = <STDIN>;
 @valores = split $linha;
 
+my $cont = 1;
 for (my $i = 0; $i < 9; $i++) 
 {
-	if($valores[$i] != 0);
-	$matriz[$i/3][$i%3][$valores[$i]] = 1;
-}
+  for(my $j = 0; $j< 9; $j++)
+  {
+    for(my $k = 0; $k < 9; $k++)
+    {
+      print "$cont ";
+      $cont++;
+    }
+    print "\n";
+  }
+my $prin = 1;
+my $sec = 1;
+
+for (my $i = 0; $i < 9; $i++) 
+{
+  for(my $j = 0; $j< 9; $j++)
+  {
+    for(my $k = 0; $k < 9; $k++)
+    {
+      $princ
+      for(my $l = $k+1; $l < 9; $l++)
+      {
+        print "$cont ";
+        $cont++;
+      }
+    }
+  }
+ }
+#varia colunas primeiro, depois valores e por ultimo linhas(fazendo os OUs aqui)(111 ou 121 ... 191 112 ... 192)
+for (my $i = 0; $i < 9; $i++) 
+{
+  for(my $k = 0; $k< 9; $k++)
+  {
+    for(my $j = 0; $j < 9; $j++)
+    {
+      print "$cont ";
+      $cont++;
+    }
+    print "\n";
+  }
+
+#	if($valores[$i] != 0);
+#	$matriz[$i/3][$i%3][$valores[$i]] = 1;
+
