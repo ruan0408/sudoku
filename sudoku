@@ -105,20 +105,59 @@ for (my $j = 0; $j < 9; $j++)
     }
   }
 }
-#OU mini grid
-for (my $i = 0; $i < 9; $i++) 
-{
-  for(my $j = 0; $j< 9; $j++)
+#OU mini gridSERAAAAAAAAAAAA????????????
+#for (my $i = 0; $i < 9; $i++) 
+#{
+  #for(my $j = 0; $j< 9; $j++)
+  my $i = 0;
+  my $j = 0;
+  while(1)
   {
-    for(my $k = 0; $k < 9; $k++)
+   for(my $m = 0; $m < 9; $m++)
     {
-      for(my $l = 0; $l < 9; $l++)
+      for(my $l = i; $l < $i+3; $l++)
       {
-        print "-$matriz[$i][$j][$k] -$matriz[$l][$j][$k] 0\n";
+        for(my $k = j; $k < $j+3; $k++)
+        {
+          print "$matriz[$l][$k][$m] ";
+        }
       }
+    print "0\n";
+    $j += 3;
+    if($j > 8){$i += 3;}
+    if($j > 8){last;}
     }
   }
-}
+#}
 
+#2 a 2 mini gridNAO TA FEITO AINDA
+#for (my $i = 0; $i < 9; $i++) 
+#{
+my $i = 0;
+  my $j = 0;
+  while(1)
+  {
+   for(my $m = 0; $m < 9; $m++)
+    {
+      for(my $l = i; $l < $i+3; $l++)
+      {
+        for(my $k = j; $k < $j+3; $k++)
+        {
+          for(my $n = j; $k < $j+3; $n++)
+          {
+            for(my $o = j; $k < $j+3; $o++)
+            {
+              print "$matriz[$l][$k][$m] ";
+            }
+          }
+        }
+      }
+    print "0\n";
+    $j += 3;
+    if($j > 8){$i += 3;}
+    if($j > 8){last;}
+    }
+  }
+#}
 
 
