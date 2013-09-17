@@ -1,38 +1,52 @@
-#! /usr/bin/perl -w
+#!/usr/bin/perl -w
 
-$linha = <STDIN>;
-@valores = split $linha;
+#$linha = <STDIN>;
+#@valores = split $linha;
 
-my $cont = 1;
+print"p cnf 729 porra\n";
+
+our $cont = 1;
+
+#criando matriz com numeros de 1 a 729
 for (my $i = 0; $i < 9; $i++) 
 {
   for(my $j = 0; $j< 9; $j++)
   {
     for(my $k = 0; $k < 9; $k++)
     {
-      print "$cont ";
-      $cont++;
+      $matriz[$i][$j][$k] = $cont++; 
     }
-    print "\n";
   }
-my $prin = 1;
-my $sec = 1;
-
+}
+print"OU dos elementos dos vetores pendurados\n";
+#OU's dos vetores pendurados
 for (my $i = 0; $i < 9; $i++) 
 {
   for(my $j = 0; $j< 9; $j++)
   {
     for(my $k = 0; $k < 9; $k++)
     {
-      $princ
+      print "$matriz[$i][$j][$k] ";
+    }
+    print "0\n";
+  }
+}
+print"2 a 2 elementos dos vetores pendurados\n\n\n\n\n";
+#2 a 2 elementos dos vetores pendurados
+for (my $i = 0; $i < 9; $i++) 
+{
+  for(my $j = 0; $j< 9; $j++)
+  {
+    for(my $k = 0; $k < 9; $k++)
+    {
       for(my $l = $k+1; $l < 9; $l++)
       {
-        print "$cont ";
-        $cont++;
+        print "-$matriz[$i][$j][$k] -$matriz[$i][$j][$l] 0\n";
       }
     }
   }
- }
+}
+print"OU de linhas\n\n\n\n\n";
 #varia colunas primeiro, depois valores e por ultimo linhas(fazendo os OUs aqui)(111 ou 121 ... 191 112 ... 192)
 for (my $i = 0; $i < 9; $i++) 
 {
@@ -40,12 +54,55 @@ for (my $i = 0; $i < 9; $i++)
   {
     for(my $j = 0; $j < 9; $j++)
     {
-      print "$cont ";
-      $cont++;
+      print "$matriz[$i][$j][$k] ";
     }
-    print "\n";
+    print "0\n";
   }
+  #print "0\n";
+}
+print"2 a 2 elementos das linhas\n\n\n\n\n";
+#2 a 2 elementos linhas#################################será?
+for (my $i = 0; $i < 9; $i++) 
+{
+  for(my $k = 0; $k< 9; $k++)
+  {
+    for(my $j = 0; $j < 9; $j++)
+    {
+      for(my $l = $j+1; $l < 9; $l++)
+      {
+        print "-$matriz[$i][$j][$k] -$matriz[$i][$l][$k] 0\n";
+      }
+    }
+  }
+}
+print"OU de colunas\n\n\n\n\n";
+#varia linhas primeiro, depois valores e por ultimo colunas(fazendo os OUs aqui)(111 ou 211 ou ... ou 911 ... 112 ... 912)
+for (my $j = 0; $j < 9; $j++) 
+{
+  for(my $k = 0; $k< 9; $k++)
+  {
+    for(my $i = 0; $i < 9; $i++)
+    {
+      print "$matriz[$i][$j][$k] ";
+    }
+    print "0\n";
+  }
+  print "\n";
+}
+print"2 a 2 elementos das colunas\n\n\n\n\n";
+#2 a 2 elementos coluna#################################será?
+for (my $j = 0; $j < 9; $j++) 
+{
+  for(my $k = 0; $k< 9; $k++)
+  {
+    for(my $i = 0; $i < 9; $i++)
+    {
+      for(my $l = $i+1; $l < 9; $l++)
+      {
+        print "-$matriz[$i][$j][$k] -$matriz[$l][$j][$k] 0\n";
+      }
+    }
+  }
+}
 
-#	if($valores[$i] != 0);
-#	$matriz[$i/3][$i%3][$valores[$i]] = 1;
 
