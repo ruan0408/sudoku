@@ -1,0 +1,10 @@
+#! /usr/bin/perl -w
+
+$linha = <STDIN>;
+@valores = split $linha;
+
+for (my $i = 0; $i < 9; $i++) 
+{
+	if($valores[$i] != 0);
+	$matriz[$i/3][$i%3][$valores[$i]] = 1;
+}
