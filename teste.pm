@@ -2,9 +2,7 @@
 
 print"p cnf 729 porra\n";
 
-our $cont = 1;
-
-#criando matriz com numeros de 1 a 729
+#criando matriz com numeros de 111 a 999
 for (my $i = 0; $i < 9; $i++) 
 {
   for(my $j = 0; $j< 9; $j++)
@@ -36,11 +34,11 @@ for($m = 0; $m < 9; $m++)
 		{
 			for($j = 0; $j < 9; $j++)
 			{
-				for($i = 0; $i < 9; $i++)
+				for($i = $j; $i < 9; $i++)
 				{
-					$linp = $l + int($i/3 - 1);
+					$linp = $l + int($i/3) -1;
 					$colp = $k + ($i%3 - 1);
-					$line = $l + int($j/3 - 1);
+					$line = $l + int($j/3) -1;
 					$cole = $k + ($j%3 - 1);
 					print "-$matriz[$line][$cole][$m] -$matriz[$linp][$colp][$m] 0\n" unless ($linp == $line and $colp == $cole);
 				}
