@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
-#$linha = <STDIN>;
-#@valores = split $linha;
+$linha = <STDIN>;
+@valores = split $linha;
 
 print"p cnf 729 porra\n";
 
@@ -18,6 +18,30 @@ for (my $i = 0; $i < 9; $i++)
     }
   }
 }
+
+for (my $i = 0; $i < 81; $i++) 
+{
+  if($i != 0)
+  {
+    $l = $i/9;
+    $k = $i%9;
+    print "$matriz[$l][$k][$valores[$i]-1] 0\n";  
+  }
+  
+}
+
+#criando matriz com numeros de 111 a 999
+#for (my $i = 0; $i < 9; $i++) 
+#{
+#  for(my $j = 0; $j< 9; $j++)
+#  {
+#    for(my $k = 0; $k < 9; $k++)
+#    {
+#      $matriz[$i][$j][$k] = ($i+1)*100+($j+1)*10+$k+1; 
+#    }
+#  }
+#}
+
 #print"OU dos elementos dos vetores pendurados\n";
 #OU's dos vetores pendurados ISSO É UM FATOOOOOOOOOOOOOOOOOOOOO!! uma casa tem de ter algum valor
 for (my $i = 0; $i < 9; $i++) 
@@ -88,7 +112,7 @@ for (my $j = 0; $j < 9; $j++)
     }
     print "0\n";
   }
-  print "\n";
+  #print "\n";
 }
 #print"2 a 2 elementos das colunas\n\n\n\n\n";
 #2 a 2 elementos coluna#################################será?parece certo
@@ -105,59 +129,90 @@ for (my $j = 0; $j < 9; $j++)
     }
   }
 }
+
 #OU mini gridSERAAAAAAAAAAAA????????????
 #for (my $i = 0; $i < 9; $i++) 
 #{
-  #for(my $j = 0; $j< 9; $j++)
-  my $i = 0;
-  my $j = 0;
-  while(1)
+#for(my $j = 0; $j< 9; $j++)
+my $i = 0;
+my $j = 0;
+
+  for(my $m = 0; $m < 9; $m++)
   {
-   for(my $m = 0; $m < 9; $m++)
+    for(my $l = $i; $l < $i+3; $l++)
     {
-      for(my $l = i; $l < $i+3; $l++)
+      for(my $k = $j; $k < $j+3; $k++)
       {
-        for(my $k = j; $k < $j+3; $k++)
-        {
-          print "$matriz[$l][$k][$m] ";
-        }
+        print "$matriz[$l][$k][$m] ";
       }
+    }
     print "0\n";
     $j += 3;
-    if($j > 8){$i += 3;}
-    if($j > 8){last;}
+    if($j > 8){$i += 3; $j = 0;}
+    if($i > 8){last;}
+  }
+
+
+$i = 0;            #percorrera as casas
+$j = 0;            #estrela do show
+$l = 1;            #índice da linha central do grid
+$k = 1;            #indice da coluna central do grid
+$m = 0;            #valor do campo
+my $linp;          #indice da linha percorrida
+my $colp;          #indice da coluna percorrida
+my $line;          #indice da linha estrela do show
+my $cole;          #indice da coluna estrela do show
+
+
+for($m = 0; $m < 9; $m++)
+{
+  for($l = 1; $l < 9; $l += 3)
+  {
+    for($k = 1; $k < 9; $k += 3)
+    {
+      for($j = 0; $j < 9; $j++)
+      {
+        for($i = $j; $i < 9; $i++)
+        {
+          $linp = $l + int($i/3) -1;
+          $colp = $k + ($i%3 - 1);
+          $line = $l + int($j/3) -1;
+          $cole = $k + ($j%3 - 1);
+          print "-$matriz[$line][$cole][$m] -$matriz[$linp][$colp][$m] 0\n" unless ($linp == $line and $colp == $cole);
+        }
+      }
     }
   }
+}
 #}
 
 #2 a 2 mini gridNAO TA FEITO AINDA
 #for (my $i = 0; $i < 9; $i++) 
 #{
-my $i = 0;
-  my $j = 0;
-  while(1)
-  {
-   for(my $m = 0; $m < 9; $m++)
-    {
-      for(my $l = i; $l < $i+3; $l++)
-      {
-        for(my $k = j; $k < $j+3; $k++)
-        {
-          for(my $n = j; $k < $j+3; $n++)
-          {
-            for(my $o = j; $k < $j+3; $o++)
-            {
-              print "$matriz[$l][$k][$m] ";
-            }
-          }
-        }
-      }
-    print "0\n";
-    $j += 3;
-    if($j > 8){$i += 3;}
-    if($j > 8){last;}
-    }
-  }
+#my $i = 0;
+ # my $j = 0;
+  #while(1)
+  #{
+  # for(my $m = 0; $m < 9; $m++)
+  #  {
+  #    for(my $l = i; $l < $i+3; $l++)
+  #    {
+  #      for(my $k = j; $k < $j+3; $k++)
+  #      {
+   #       for(my $n = j; $k < $j+3; $n++)
+    #      {
+     ##      {
+      #        print "$matriz[$l][$k][$m] ";
+       #     }
+       #   }
+       # }
+      #}
+   # print "0\n";
+   # $j += 3;
+   # if($j > 8){$i += 3;}
+   # if($j > 8){last;}
+   ## }
+  #}
 #}
 
 
