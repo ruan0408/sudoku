@@ -1,0 +1,1 @@
+O EP funciona utilizando o minisat (o nome tem de ser exatamente esse), que deverá estar na mesma pasta ou o caminho deverá ser mudado no cabeçalho do programa "sudoku" na variavel $minisat_path.

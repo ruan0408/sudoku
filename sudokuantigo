@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-my $minisat_path = "./minisat"; #Path para o minisat
-
 open(INPUT, "<", $ARGV[0]) or die "Falha ao abrir o arquivo!\n";
 $linha = <INPUT>;
 close(INPUT);
@@ -10,7 +8,7 @@ close(INPUT);
 open(OUTPUT, ">", "sudoku.cnf");
 select OUTPUT;
 
-$clausulas = 11745;
+$clausulas = 11916;
 for (my $i = 0; $i < 81; $i++) 
 {
   if($valores[$i] != 0){$clausulas++;}
@@ -43,7 +41,7 @@ for (my $i = 0; $i < 81; $i++)
   
 }
 
-#OU's dos espaços
+#OU's dos vetores pendurados
 for (my $i = 0; $i < 9; $i++) 
 {
   for(my $j = 0; $j< 9; $j++)
@@ -56,7 +54,7 @@ for (my $i = 0; $i < 9; $i++)
   }
 }
 
-#2 a 2 elementos de cada espaço
+#2 a 2 elementos dos vetores pendurados
 for(my $i = 0; $i < 9; $i++) 
 {
   for(my $j = 0; $j< 9; $j++)
@@ -68,6 +66,19 @@ for(my $i = 0; $i < 9; $i++)
         print "-$matriz[$i][$j][$k] -$matriz[$i][$j][$l] 0\n";
       }
     }
+  }
+}
+
+#varia colunas primeiro, depois valores e por ultimo linhas(fazendo os OUs aqui)(111 ou 121 ... 191 112 ... 192)
+for (my $i = 0; $i < 9; $i++) 
+{
+  for(my $k = 0; $k< 9; $k++)
+  {
+    for(my $j = 0; $j < 9; $j++)
+    {
+      print "$matriz[$i][$j][$k] ";
+    }
+    print "0\n";
   }
 }
 
@@ -86,6 +97,18 @@ for (my $i = 0; $i < 9; $i++)
   }
 }
 
+#varia linhas primeiro, depois valores e por ultimo colunas(fazendo os OUs aqui)
+for (my $j = 0; $j < 9; $j++) 
+{
+  for(my $k = 0; $k< 9; $k++)
+  {
+    for(my $i = 0; $i < 9; $i++)
+    {
+      print "$matriz[$i][$j][$k] ";
+    }
+    print "0\n";
+  }
+}
 
 #2 a 2 elementos coluna
 for (my $j = 0; $j < 9; $j++) 
@@ -102,8 +125,26 @@ for (my $j = 0; $j < 9; $j++)
   }
 }
 
-#2 a 2 elementos grid 
+#OU mini grid
+my $i = 0;
+my $j = 0;
 
+for(my $m = 0; $m < 9; $m++)
+{
+  for(my $l = $i; $l < $i+3; $l++)
+  {
+    for(my $k = $j; $k < $j+3; $k++)
+    {
+      print "$matriz[$l][$k][$m] ";
+    }
+  }
+  print "0\n";
+  $j += 3;
+  if($j > 8){$i += 3; $j = 0;}
+  if($i > 8){last;}
+}
+
+#2a2 minigrid#
 $i = 0;            #percorrera as casas
 $j = 0;            #estrela do show
 $l = 1;            #índice da linha central do grid
@@ -123,25 +164,22 @@ for($m = 0; $m < 9; $m++)
     {
       for($j = 0; $j < 9; $j++)
       {
-        for($i = $j+1; $i < 9; $i++)
+        for($i = $j; $i < 9; $i++)
         {
           $linp = $l + int($i/3) -1;
           $colp = $k + ($i%3 - 1);
           $line = $l + int($j/3) -1;
           $cole = $k + ($j%3 - 1);
-          print "-$matriz[$line][$cole][$m] -$matriz[$linp][$colp][$m] 0\n";
+          print "-$matriz[$line][$cole][$m] -$matriz[$linp][$colp][$m] 0\n" unless ($linp == $line and $colp == $cole);
         }
       }
     }
   }
 }
-
 close(OUTPUT);
 select STDOUT;
 
-#Execução do minisat
-`$minisat_path sudoku.cnf sudoku.ans`;
-
+qx|./minisat sudoku.cnf sudoku.ans|;
 open(RESPOSTA , "<", "sudoku.ans") or die "Não consegui abrir sudoku.ans";
 $resp = <RESPOSTA>;
 chomp $resp;
@@ -150,10 +188,8 @@ print "Satisfazível\n";
 $resp = <RESPOSTA>;
 close(RESPOSTA);
 @resp = split(" ",$resp);
+
 $cont = 0;
-
-#impressão da solução
-
 for($i = 0; $i < scalar @resp; $i++)
 {
   if($resp[$i] > 0)
