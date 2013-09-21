@@ -1,0 +1,165 @@
+#!/usr/bin/perl -w
+
+open(INPUT, "<", $ARGV[0]) or die "Falha ao abrir o arquivo!\n";
+$linha = <INPUT>;
+close(INPUT);
+@valores = split(" ",$linha);
+
+open(OUTPUT, ">", "sudoku.cnf");
+select OUTPUT;
+
+$clausulas = 11916;
+for (my $i = 0; $i < 81; $i++) 
+{
+  if($valores[$i] != 0){$clausulas++;}
+}
+
+print"p cnf 729 $clausulas\n";
+
+our $cont = 1;
+
+#criando matriz com numeros de 1 a 729
+for (my $i = 0; $i < 9; $i++) 
+{
+  for(my $j = 0; $j< 9; $j++)
+  {
+    for(my $k = 0; $k < 9; $k++)
+    {
+      $matriz[$i][$j][$k] = $cont++; 
+    }
+  }
+}
+
+for (my $i = 0; $i < 81; $i++) 
+{
+  if($valores[$i] != 0)
+  {
+    $l = $i/9;
+    $k = $i%9;
+    print "$matriz[$l][$k][$valores[$i]-1] 0\n";
+  }
+  
+}
+
+#OU's dos vetores pendurados
+for (my $i = 0; $i < 9; $i++) 
+{
+  for(my $j = 0; $j< 9; $j++)
+  {
+    for(my $k = 0; $k < 9; $k++)
+    {
+      print "$matriz[$i][$j][$k] ";
+    }
+    print "0\n";
+  }
+}
+
+#2 a 2 elementos dos vetores pendurados
+for(my $i = 0; $i < 9; $i++) 
+{
+  for(my $j = 0; $j< 9; $j++)
+  {
+    for(my $k = 0; $k < 9; $k++)
+    {
+      for(my $l = $k+1; $l < 9; $l++)
+      {
+        print "-$matriz[$i][$j][$k] -$matriz[$i][$j][$l] 0\n";
+      }
+    }
+  }
+}
+
+#2 a 2 elementos linhas
+for (my $i = 0; $i < 9; $i++) 
+{
+  for(my $k = 0; $k< 9; $k++)
+  {
+    for(my $j = 0; $j < 9; $j++)
+    {
+      for(my $l = $j+1; $l < 9; $l++)
+      {
+        print "-$matriz[$i][$j][$k] -$matriz[$i][$l][$k] 0\n";
+      }
+    }
+  }
+}
+
+
+#2 a 2 elementos coluna
+for (my $j = 0; $j < 9; $j++) 
+{
+  for(my $k = 0; $k< 9; $k++)
+  {
+    for(my $i = 0; $i < 9; $i++)
+    {
+      for(my $l = $i+1; $l < 9; $l++)
+      {
+        print "-$matriz[$i][$j][$k] -$matriz[$l][$j][$k] 0\n";
+      }
+    }
+  }
+}
+
+#2a2 minigrid#
+$i = 0;            #percorrera as casas
+$j = 0;            #estrela do show
+$l = 1;            #índice da linha central do grid
+$k = 1;            #indice da coluna central do grid
+$m = 0;            #valor do campo
+my $linp;          #indice da linha percorrida
+my $colp;          #indice da coluna percorrida
+my $line;          #indice da linha estrela do show
+my $cole;          #indice da coluna estrela do show
+
+
+for($m = 0; $m < 9; $m++)
+{
+  for($l = 1; $l < 9; $l += 3)
+  {
+    for($k = 1; $k < 9; $k += 3)
+    {
+      for($j = 0; $j < 9; $j++)
+      {
+        for($i = $j; $i < 9; $i++)
+        {
+          $linp = $l + int($i/3) -1;
+          $colp = $k + ($i%3 - 1);
+          $line = $l + int($j/3) -1;
+          $cole = $k + ($j%3 - 1);
+          print "-$matriz[$line][$cole][$m] -$matriz[$linp][$colp][$m] 0\n" unless ($linp == $line and $colp == $cole);
+        }
+      }
+    }
+  }
+}
+close(OUTPUT);
+select STDOUT;
+
+qx|./minisat sudoku.cnf sudoku.ans|;
+open(RESPOSTA , "<", "sudoku.ans") or die "Não consegui abrir sudoku.ans";
+$resp = <RESPOSTA>;
+chomp $resp;
+die "Insatisfazível\n" if($resp eq 'UNSAT');
+print "Satisfazível\n";
+$resp = <RESPOSTA>;
+close(RESPOSTA);
+@resp = split(" ",$resp);
+my $testem=0;
+$cont = 0;
+for($i = 0; $i < scalar @resp; $i++)
+{
+  if($resp[$i] > 0)
+  {
+    if($resp[$i]%9 == 0){print"9";}
+    else{print $resp[$i]%9;}
+    print ' ';
+    $testem += $resp[$i]%9;
+    $cont++;
+  }
+  if($cont == 9)
+  {
+    $cont = 0;
+    print "($testem)\n";
+    $testem = 0;
+  }
+}
