@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 
+my $minisat_path = "./minisat"; #Path para o minisat
+
 open(INPUT, "<", $ARGV[0]) or die "Falha ao abrir o arquivo!\n";
 $linha = <INPUT>;
 close(INPUT);
@@ -41,7 +43,7 @@ for (my $i = 0; $i < 81; $i++)
   
 }
 
-#OU's dos vetores pendurados
+#OU's dos espaços
 for (my $i = 0; $i < 9; $i++) 
 {
   for(my $j = 0; $j< 9; $j++)
@@ -54,7 +56,7 @@ for (my $i = 0; $i < 9; $i++)
   }
 }
 
-#2 a 2 elementos dos vetores pendurados
+#2 a 2 elementos de cada espaço
 for(my $i = 0; $i < 9; $i++) 
 {
   for(my $j = 0; $j< 9; $j++)
@@ -100,7 +102,8 @@ for (my $j = 0; $j < 9; $j++)
   }
 }
 
-#2a2 minigrid#
+#2 a 2 elementos grid 
+
 $i = 0;            #percorrera as casas
 $j = 0;            #estrela do show
 $l = 1;            #índice da linha central do grid
@@ -120,22 +123,25 @@ for($m = 0; $m < 9; $m++)
     {
       for($j = 0; $j < 9; $j++)
       {
-        for($i = $j; $i < 9; $i++)
+        for($i = $j+1; $i < 9; $i++)
         {
           $linp = $l + int($i/3) -1;
           $colp = $k + ($i%3 - 1);
           $line = $l + int($j/3) -1;
           $cole = $k + ($j%3 - 1);
-          print "-$matriz[$line][$cole][$m] -$matriz[$linp][$colp][$m] 0\n" unless ($linp == $line and $colp == $cole);
+          print "-$matriz[$line][$cole][$m] -$matriz[$linp][$colp][$m] 0\n";
         }
       }
     }
   }
 }
+
 close(OUTPUT);
 select STDOUT;
 
-qx|./minisat sudoku.cnf sudoku.ans|;
+#Execução do minisat
+`$minisat_path sudoku.cnf sudoku.ans`;
+
 open(RESPOSTA , "<", "sudoku.ans") or die "Não consegui abrir sudoku.ans";
 $resp = <RESPOSTA>;
 chomp $resp;
@@ -144,8 +150,10 @@ print "Satisfazível\n";
 $resp = <RESPOSTA>;
 close(RESPOSTA);
 @resp = split(" ",$resp);
-my $testem=0;
 $cont = 0;
+
+#impressão da solução
+
 for($i = 0; $i < scalar @resp; $i++)
 {
   if($resp[$i] > 0)
@@ -153,13 +161,11 @@ for($i = 0; $i < scalar @resp; $i++)
     if($resp[$i]%9 == 0){print"9";}
     else{print $resp[$i]%9;}
     print ' ';
-    $testem += $resp[$i]%9;
     $cont++;
   }
   if($cont == 9)
   {
     $cont = 0;
-    print "($testem)\n";
-    $testem = 0;
+    print "\n";
   }
 }
