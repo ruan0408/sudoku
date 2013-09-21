@@ -1,0 +1,95 @@
+\documentclass[
+	article,			
+	11pt,				
+	oneside,			
+	a4paper,			
+	english,			
+	brazil,				
+	]{abntex2}
+	
+\usepackage[utf8]{inputenc}	 
+\usepackage{amsmath}
+
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+
+\author{Ruan Costa  nº USP 7990929 e \\ Vinícius Silva nº USP 7557626}
+\title{Primeiro EP de MAC239 \\ Resolvedor de Sudoku}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\section{A Lógica do Sudoku}
+O primeiro desafio do EP era codificar as regras do Sudoku em cláusulas lógicas. 
+Para isso, usamos o modelo do problema das n rainhas.
+Naquele caso as regras eram:
+\begin{itemize}
+\item Tem de haver pelo menos uma rainha em todas as linhas.
+\item Pode haver apenas uma rainha em cada linha.
+\item Pode haver apenas uma rainha em cada coluna.
+\item Pode haver apenas uma rainha em cada diagonal.
+\end{itemize}
+No caso do Sudoku há a complicação de não podermos trabalhar com apenas dois estados em cada  ``espaço'' (combinação de linha e coluna).
+A solução foi tratar cada espaço como um vetor de 9 casos.
+Desta forma trabalhamos o sudoku em três dimensões: linha x coluna x número.
+Portanto o conjunto dos átomos das cláusulas é definido da seguinte forma:
+\begin{displaymath}
+C = \{\vec{x} \in N \times N \times N : 1 \leq x_i \leq 9\}
+\end{displaymath}
+Podemos também definir a função ``ligado'':
+
+\begin{displaymath}
+l:N \times N \times N\longrightarrow\{0,1\}
+\end{displaymath}
+
+\begin{displaymath}
+l(\vec{x}) = 
+\begin{cases}
+1, \texttt{ se o espaço $(x_1,x_2)$ contém o número em $x_3$}\\
+0, \texttt{ se o espaço $(x_1,x_2)$ não contém o número em $x_3$}
+\end{cases}
+\end{displaymath}
+\\
+Todos os vetores tais que $l(\vec{x}) = 1$, chamaremos de ligado, e os outros chamaremos de desligado.
+Assim, podemos traduzir as regras do Sudoku sa guinte forma:
+
+\begin{itemize}
+\item Tem de haver pelo menos um vetor ligado em cada espaço.
+\item Pode haver apenas um vetor ligado em cada espaço.
+\item Pode haver apenas um vetor ligado em cada coluna com o mesmo número.
+\item Pode haver apenas um vetor ligado em cada linha com o mesmo número.
+\item Pode haver apenas um vetor ligado em cada ``grid'' com o mesmo número.
+\end{itemize}
+Se considerarmos cada vetor $\vec{x} \in C$ um átomo, poderiamos escrever essas regras na forma clausal com as seguintes clausulas:
+
+\begin{itemize}
+\item $\bigwedge_{k=1}^9\bigwedge_{j=1}^9\bigvee_{i=1}^9 (k,j,i)$  
+\item $\bigwedge_{r=1}^9\bigwedge_{k=1}^9\bigwedge_{j=1}^9\bigwedge_{i=j+1}^9 (\neg(r,k,j)\vee\neg(r,k,i))$
+\item $\bigwedge_{r=1}^9\bigwedge_{k=1}^9\bigwedge_{j=1}^9\bigwedge_{i=j+1}^9 (\neg(r,j,k)\vee\neg(r,i,k))$
+\item $\bigwedge_{r=1}^9\bigwedge_{k=1}^9\bigwedge_{j=1}^9\bigwedge_{i=j+1}^9 (\neg(j,r,k)\vee\neg(i,r,k))$
+\item Para cada grid de centro (r,s): $\bigwedge_{k=1}^9\bigwedge_{j=1}^9\bigwedge_{i=j+1}^9 (\neg(j',j'',k) \vee \neg(i',i'',k))$ \\tais que 
+$\begin{cases}
+j' = (j-1)/3+r-1 \\
+j'' = (j-1)\texttt{mod(3)}+s-1 \\
+i' = (i-1)/3+r-1 \\
+i'' = (i-1)\texttt{mod(3)}+s-1
+ \end{cases}$
+\end{itemize}
+\newpage
+\section{Implementação}
+Com as cláusulas definidas, o próximo passo foi implementar um programa que escreve o arquivo de entrada para o Minisat.
+Escolhemos a linguagem Perl devido à facilidade em manipular strings e arquivos.
+Caso o Minisat não esteja na pasta do programa, é preciso mudar a variável ``\$minisat\_path'' com o caminho correto.
+A lógica utilizada foi bem simples, o programa segue os seguntes passos:
+\begin{enumerate}
+\item Abre o arquivo de entrada.
+\item Cria uma matriz $9 \times 9 \times 9$ enumerada de 1 a 729.
+\item Imprime em um arquivo .cnf os valores correspondentes aos campos fixos do Sudoku.
+\item Imprime no mesmo arquivo .cnf as clausulas mapeadas na matriz, usando a lógica da sessão anterior.
+\item Chama o Bash para executar o minisat.
+\item Imprime a saída: 
+\begin{enumerate}
+\item Caso não haja solução, imprime "Insatizfazível".
+\item Caso haja solução, imprime "Satizfazível" e uma solução.
+\end{enumerate}
+\end{enumerate}
+\end{document}
